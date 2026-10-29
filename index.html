@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dungeon Blitz — V1.3</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game" width="1280" height="720"></canvas>
+
+  <div id="vignette"></div>
+  <div id="flash"></div>
+
+  <section id="mainMenu" class="screen active">
+    <div class="menuBackdrop">
+      <div class="brand">
+        <div class="brandTop">DUNGEON</div>
+        <div class="brandMain">BLITZ</div>
+        <div class="brandSub">PIXEL ROGUELITE • BUILD. FIGHT. ESCAPE.</div>
+      </div>
+      <div class="menuCard">
+        <button id="newRun" class="primary heroBtn">⚔ NEW RUN <span>ENTER</span></button>
+        <button id="continueRun">▶ CONTINUE <span id="continueState">NO SAVE</span></button>
+        <button id="arsenalBtn">🔧 ARSENAL</button>
+        <button id="upgradesBtn">⬆ META UPGRADES</button>
+        <button id="settingsBtn">⚙ SETTINGS</button>
+      </div>
+      <div class="menuStats">
+        <div><b id="menuMetaCoins">0</b><small>META COINS</small></div>
+        <div><b id="menuBestRoom">0</b><small>BEST ROOM</small></div>
+        <div><b id="menuKills">0</b><small>LIFETIME KILLS</small></div>
+      </div>
+      <div class="menuFooter">WASD / ARROWS • MOUSE • SHIFT DASH • E INTERACT • I INVENTORY • M MAP • ESC PAUSE</div>
+    </div>
+  </section>
+
+  <section id="arsenalMenu" class="screen">
+    <div class="panel wide">
+      <div class="panelHead"><div><h1>ARSENAL</h1><p class="muted">Weapons are shown with their combat identity and playstyle.</p></div><button id="backArsenal">✕</button></div>
+      <div id="arsenalGrid" class="weaponGrid"></div>
+    </div>
+  </section>
+
+  <section id="upgradeMenu" class="screen">
+    <div class="panel wide">
+      <div class="panelHead"><div><h1>META UPGRADES</h1><p class="muted">Permanent progression. Every purchase changes future runs.</p></div><button id="backUpgrades">✕</button></div>
+      <div class="currencyLine">🪙 <b id="metaCoins">0</b> Meta Coins</div>
+      <div id="metaUpgradeGrid" class="upgradeGrid"></div>
+      <div class="footerLine"><span class="muted">Progress is stored locally on this device.</span><button id="resetMeta" class="danger">RESET META</button></div>
+    </div>
+  </section>
+
+  <section id="settingsMenu" class="screen">
+    <div class="panel settings">
+      <div class="panelHead"><h1>SETTINGS</h1><button id="backSettings">✕</button></div>
+      <label>Master Volume <input id="masterVol" type="range" min="0" max="1" step=".01"></label>
+      <label>Music Volume <input id="musicVol" type="range" min="0" max="1" step=".01"></label>
+      <label>SFX Volume <input id="sfxVol" type="range" min="0" max="1" step=".01"></label>
+      <label>Screen Shake <input id="shakeVol" type="range" min="0" max="1" step=".01"></label>
+      <div class="toggleRow"><span>Color Assist</span><button id="colorAssistBtn">OFF</button></div>
+      <div class="toggleRow"><span>Auto Dash Aim</span><button id="dashAimBtn">ON</button></div>
+      <button id="muteBtn">🔊 SOUND ON</button>
+    </div>
+  </section>
+
+  <section id="pauseMenu" class="screen">
+    <div class="panel small">
+      <div class="pauseTitle">PAUSED</div>
+      <button id="resumeBtn" class="primary">RESUME</button>
+      <button id="pauseMapBtn">🗺 WORLD MAP</button>
+      <button id="pauseSettingsBtn">⚙ SETTINGS</button>
+      <button id="saveQuitBtn">💾 SAVE & QUIT</button>
+      <button id="quitRunBtn" class="danger">QUIT RUN</button>
+    </div>
+  </section>
+
+  <section id="mapOverlay" class="screen">
+    <div class="panel mapPanel">
+      <div class="panelHead"><div><h1>WORLD MAP</h1><p class="muted">Explore, route, loot, and hunt the boss.</p></div><button id="closeMap">✕</button></div>
+      <canvas id="mapCanvas" width="980" height="560"></canvas>
+      <div class="legend"><span>● Start</span><span>● Combat</span><span>● Treasure</span><span>● Shop</span><span>● Event</span><span>● Boss</span><span>● Secret</span></div>
+    </div>
+  </section>
+
+  <section id="inventory" class="screen">
+    <div class="panel inventoryPanel">
+      <div class="panelHead"><div><h1>INVENTORY</h1><p class="muted">Use consumables during a run.</p></div><button id="closeInv">✕</button></div>
+      <div id="inventoryTop" class="inventoryTop"></div>
+      <div id="invGrid" class="invGrid"></div>
+      <div class="muted">Hotkeys: 1 = Potion · 2 = Bomb · 3 = Magnet</div>
+    </div>
+  </section>
+
+  <section id="roomReward" class="screen">
+    <div class="panel">
+      <div class="rewardIcon">✨🗡️✨</div>
+      <h1>ROOM CLEARED</h1>
+      <p id="rewardSub">Choose one upgrade.</p>
+      <div id="runUpgradeGrid" class="upgradeGrid"></div>
+    </div>
+  </section>
+
+  <section id="shop" class="screen">
+    <div class="panel wide">
+      <div class="panelHead"><div><h1>MIRA'S MARKET</h1><p class="muted">Spend run coins. Buy now, regret nothing.</p></div><button id="closeShop">✕</button></div>
+      <div class="currencyLine">🪙 <b id="shopCoins">0</b></div>
+      <div id="shopGrid" class="upgradeGrid"></div>
+    </div>
+  </section>
+
+  <section id="dialogueScreen" class="screen dialogueScreen">
+    <div class="dialogueStage">
+      <div class="dialogueBackdrop"></div>
+      <div class="dialoguePortraitWrap">
+        <div id="dialoguePortrait" class="dialoguePortrait">W</div>
+        <div class="portraitGlow"></div>
+      </div>
+      <div class="dialogueBox">
+        <div class="dialogueMeta"><div><b id="dialogueSpeaker">THE WARDEN</b><span id="dialogueRole">LAST LINE OF THE GATE</span></div><small id="dialogueIndex">1 / 1</small></div>
+        <p id="dialogueText"></p>
+        <div class="dialogueControls"><button id="dialogueSkip">SKIP SCENE</button><button id="dialogueContinue" class="primary">CONTINUE ▶</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gameOver" class="screen">
+    <div class="panel small gameOverPanel">
+      <div class="overIcon">💀⚔️</div>
+      <h1>RUN OVER</h1>
+      <p id="gameOverStats"></p>
+      <button id="retryRun" class="primary">↻ RETRY</button>
+      <button id="backMenuAfterDeath">MAIN MENU</button>
+    </div>
+  </section>
+
+  <div id="hud" class="hud hidden">
+    <div class="hudLeft">
+      <div class="playerCard">
+        <div class="portrait">◆</div>
+        <div class="bars">
+          <div class="barLine"><span>HP</span><div class="meter"><div id="hpBar"></div></div><b id="hpText">100/100</b></div>
+          <div class="barLine"><span>XP</span><div class="meter"><div id="xpBar"></div></div><b id="xpText">1 · 0/100</b></div>
+        </div>
+      </div>
+      <div class="statusPills">
+        <span id="comboPill">COMBO x0</span>
+        <span id="dashPill">DASH READY</span><span id="boostPill">NO BOOST</span><span id="dangerPill">DANGER 1</span>
+      </div>
+    </div>
+    <div class="hudCenter">
+      <div id="roomLabel">START</div>
+      <div id="combatPhaseHud" class="combatPhaseHud">
+        <div><b id="combatPhase">GET READY</b><span id="combatTimer">0.0</span></div>
+        <small id="combatHint">The room is quiet… prepare your position.</small>
+      </div>
+      <div id="objective">Clear the room.</div>
+    </div>
+    <div class="hudRight">
+      <div class="resourceLine">🪙 <b id="runCoins">0</b> <span>•</span> <b id="roomCounter">1/1</b></div>
+      <div class="weaponDisplay"><span id="weaponIcon">✦</span><div><b id="weaponText">Blaster</b><small id="weaponHint">Balanced auto pistol</small></div></div>
+      <div id="weaponQuickbar" class="weaponQuickbar" aria-label="Weapon quick select"></div>
+      <div class="hudButtons"><button id="mapBtn">🗺</button><button id="invBtn">🎒</button><button id="pauseBtn">Ⅱ</button></div>
+    </div>
+  </div>
+
+  <div id="bossHud" class="bossHud hidden"><b id="bossName">BOSS</b><div class="bossBar"><div id="bossBar"></div></div><small id="bossPhase">PHASE 1</small></div>
+  <div id="toast" class="toast hidden"></div>
+  <div id="levelToast" class="levelToast hidden"></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+
+:root{
+  --bg:#080b15;--panel:#11182a;--panel2:#161f35;--line:#34415f;--text:#f6f7ff;
+  --muted:#94a0bc;--gold:#fbbf24;--violet:#8b5cf6;--cyan:#22d3ee;--red:#f43f5e;--green:#34d399;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,sans-serif}
+body{user-select:none}
+#app{width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,#1d2441 0,#090c17 55%,#04050a 100%);position:relative}
+#game{width:min(1280px,100vw);height:min(720px,56.25vw);image-rendering:pixelated;background:#0d1320;box-shadow:0 0 100px #000;cursor:crosshair}
+#vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,transparent 45%,rgba(0,0,0,.38) 100%);z-index:5}
+#flash{position:absolute;inset:0;opacity:0;background:#fff;pointer-events:none;z-index:18}
+.screen{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:20;background:rgba(2,4,10,.82);backdrop-filter:blur(5px)}
+.screen.active{display:flex}
+.menuBackdrop{width:min(1100px,94vw);text-align:center;position:relative}
+.brand{margin-bottom:28px}
+.brandTop{font-size:clamp(40px,6vw,78px);font-weight:1000;letter-spacing:9px;line-height:.72;text-shadow:0 6px #161a2c,0 0 32px #7c3aed}
+.brandMain{font-size:clamp(72px,10vw,132px);font-weight:1000;letter-spacing:11px;line-height:.9;color:#fbbf24;text-shadow:0 7px #7c4a00,0 0 45px rgba(251,191,36,.32)}
+.brandSub{margin-top:16px;color:#b5c2e5;letter-spacing:5px;font-size:12px}
+.menuCard{width:min(430px,94vw);margin:0 auto;display:grid;gap:10px}
+button{border:1px solid var(--line);background:linear-gradient(180deg,#19233c,#11182a);color:var(--text);padding:13px 16px;border-radius:9px;font-weight:900;letter-spacing:.5px;cursor:pointer;transition:.14s transform,.14s border,.14s filter}
+button:hover{transform:translateY(-2px);border-color:#6c7ca8;filter:brightness(1.12)}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.38;cursor:not-allowed;transform:none}
+button.primary{background:linear-gradient(180deg,#8b5cf6,#6d28d9);border-color:#b9a1ff;box-shadow:0 10px 30px rgba(124,58,237,.25)}
+.heroBtn{font-size:18px;padding:17px}
+button span{float:right;color:#9ca9c4;font-size:10px;letter-spacing:1px}
+.menuStats{display:flex;justify-content:center;gap:14px;margin:22px auto 10px}
+.menuStats div{min-width:110px;padding:10px 14px;background:rgba(10,15,28,.72);border:1px solid #293652;border-radius:10px}
+.menuStats b{display:block;font-size:21px;color:#fff}.menuStats small{color:#8290ae;font-size:9px;letter-spacing:1px}
+.menuFooter{color:#65728d;font-size:10px;letter-spacing:1.2px;margin-top:25px}
+.panel{width:min(720px,94vw);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#121a2d,#0b1120);border:1px solid #3a4667;border-radius:16px;padding:24px;box-shadow:0 28px 90px #000}
+.panel.wide{width:min(1040px,95vw)}
+.panel.small{width:min(440px,92vw);text-align:center}
+.panelHead{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:1px solid #27324d;padding-bottom:14px;margin-bottom:18px}
+.panelHead h1{margin:0;font-size:24px}.panelHead p{margin:6px 0 0}
+.muted{color:var(--muted);font-size:12px}
+.currencyLine{font-size:18px;margin:0 0 15px;color:#fef3c7}
+.upgradeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.upgradeCard{background:linear-gradient(180deg,#172139,#11182a);border:1px solid #303d5b;border-radius:12px;padding:14px;text-align:left;position:relative;overflow:hidden}
+.upgradeCard:before{content:"";position:absolute;inset:0;border-top:2px solid #465577;opacity:.5}
+.upgradeCard h3{margin:0 0 6px;font-size:15px}.upgradeCard h3 small{float:right;color:#9eabd0}
+.upgradeCard p{min-height:36px;color:#9ba8c4;font-size:12px;line-height:1.45}
+.upgradeCard button{width:100%}
+.footerLine{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-top:18px}
+.danger{background:#3b1622;border-color:#753247}
+.settings label,.toggleRow{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid #232d47}
+.settings input{width:100%}.toggleRow button{width:110px}
+.weaponGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.weaponCard{padding:15px;border:1px solid #303b59;border-radius:12px;background:#131c31}.weaponArt{height:100px;display:grid;place-items:center;font-size:54px;border-radius:10px;background:#0d1425;margin-bottom:12px}.weaponCard h3{margin:0}.weaponCard p{color:#9aa8c4;font-size:12px;min-height:34px}.statRow{display:flex;justify-content:space-between;color:#8390ac;font-size:11px;padding:4px 0}
+.mapPanel{width:min(1060px,96vw)}#mapCanvas{width:100%;border:1px solid #2d3958;border-radius:11px;background:#070b15;image-rendering:pixelated}.legend{display:flex;flex-wrap:wrap;gap:12px;color:#8490ab;font-size:10px;margin-top:10px}
+.inventoryTop{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.inventoryTop .chip{background:#162038;border:1px solid #31405f;padding:7px 10px;border-radius:8px;font-size:11px}
+.invGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.invSlot{min-height:105px;padding:12px;background:#111a2e;border:1px solid #2e3b5c;border-radius:11px;text-align:center}.invSlot .icon{font-size:29px;margin-bottom:5px}
+.rewardIcon,.overIcon{font-size:54px;color:#fbbf24;text-shadow:0 0 30px rgba(251,191,36,.28)}.gameOverPanel h1{margin:0}
+.hud{position:absolute;inset:12px 14px auto;z-index:10;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;pointer-events:none}.hud>*{pointer-events:auto}
+.hudLeft,.hudRight{display:flex;gap:10px;align-items:flex-start}.hudRight{justify-content:flex-end}.playerCard{display:flex;gap:9px;align-items:center}.portrait{width:38px;height:38px;display:grid;place-items:center;background:#142238;border:1px solid #435274;border-radius:8px;color:#22d3ee}
+.bars{width:220px}.barLine{display:grid;grid-template-columns:24px 1fr 60px;gap:7px;align-items:center;font-size:9px;margin-bottom:5px}.barLine>span{color:#7886a3}.barLine b{text-align:right;font-size:10px}.meter{height:9px;background:#0a1020;border:1px solid #283551;border-radius:4px;overflow:hidden}.meter div{height:100%;transition:width .12s}.meter #hpBar{background:linear-gradient(90deg,#dc2626,#fb7185);width:100%}.meter #xpBar{background:linear-gradient(90deg,#7c3aed,#c084fc);width:0}
+.statusPills{display:flex;gap:6px;flex-wrap:wrap}.statusPills span,.resourceLine,.weaponDisplay,#roomLabel,#objective{background:rgba(8,12,24,.82);border:1px solid #293652;border-radius:8px;padding:7px 9px;font-size:9px}
+#comboPill{color:#fde68a}.dashReady{color:#67e8f9!important;border-color:#24788d!important}
+.hudCenter{text-align:center}.hudCenter #roomLabel{font-size:10px;font-weight:1000;letter-spacing:1px}.hudCenter #objective{margin-top:4px;color:#9aa8c2}
+.hudRight{flex-wrap:wrap}.weaponDisplay{display:flex;gap:8px;align-items:center}.weaponDisplay>span{font-size:20px;color:#fbbf24}.weaponDisplay small{display:block;color:#7786a5;margin-top:3px}.hudButtons{display:flex;gap:5px}.hudButtons button{padding:8px 10px;background:rgba(13,20,37,.92)}
+.bossHud{position:absolute;top:78px;left:50%;transform:translateX(-50%);z-index:11;width:min(560px,80vw);text-align:center}.bossHud>b{display:block;font-size:12px;letter-spacing:2px;margin-bottom:4px}.bossBar{height:10px;border:1px solid #58283a;background:#130d17;border-radius:5px;overflow:hidden}.bossBar div{height:100%;background:linear-gradient(90deg,#ef4444,#fb7185);width:100%}.bossHud small{color:#a1acc4;font-size:9px}
+.toast,.levelToast{position:absolute;left:50%;transform:translateX(-50%);z-index:16;background:#111a2f;border:1px solid #47567d;border-radius:10px;padding:11px 15px;box-shadow:0 15px 45px #000;font-size:11px}
+.toast{bottom:28px}.levelToast{top:32%;font-size:16px;font-weight:1000;color:#fde68a}
+.hidden{display:none!important}
+@media(max-width:900px){.hud{grid-template-columns:1fr auto}.hudCenter{display:none}.hudRight{grid-column:2}.bars{width:180px}.invGrid{grid-template-columns:repeat(2,1fr)}}
+
+/* V0.5.1 UI interaction fix */
+.screen, .screen * { pointer-events:auto; }
+#mainMenu .menuBackdrop { position:relative; z-index:30; pointer-events:auto; }
+#mainMenu .menuCard button { position:relative; z-index:31; pointer-events:auto; }
+
+/* V0.5.3 input hardening */
+#app > .screen { pointer-events: auto; }
+#app > .screen:not(.active) { pointer-events: none; }
+#hud.hidden, #bossHud.hidden, #toast.hidden, #levelToast.hidden { pointer-events:none; }
+#hud button, #bossHud, #toast, #levelToast { pointer-events:auto; }
+
+
+/* V0.6 combat telegraph + pixel-art presentation */
+.combatPhaseHud{margin:7px auto 5px;width:min(500px,70vw);padding:7px 11px;border:1px solid #33425f;border-radius:9px;background:rgba(8,13,25,.88);box-shadow:0 8px 22px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.04)}
+.combatPhaseHud>div{display:flex;justify-content:center;align-items:center;gap:12px}
+.combatPhaseHud b{font:900 10px/1 monospace;letter-spacing:1.4px;color:#f8fafc}
+.combatPhaseHud span{font:900 13px/1 monospace;color:#fbbf24;min-width:31px}
+.combatPhaseHud small{display:block;margin-top:5px;color:#8795b1;font:9px/1.35 monospace}
+#combatPhase[data-state="attack"]{color:#fb7185}
+#combatPhase[data-state="defense"]{color:#60a5fa}
+#combatPhase[data-state="ready"]{color:#fbbf24}
+
+/* V0.7 market-ready UI / mouse-first interaction / story presentation */
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #22d3ee;outline-offset:2px}
+.upgradeCard,.weaponCard,.invSlot{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,filter .16s ease}
+.upgradeCard:hover,.weaponCard:hover,.invSlot:hover{transform:translateY(-4px);border-color:#6d7eab;box-shadow:0 18px 38px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.04);filter:brightness(1.05)}
+.upgradeCard button:hover,.weaponCard button:hover,.invSlot button:hover{transform:translateY(-1px);border-color:#8ea4d3}
+.upgradeCard button:active,.weaponCard button:active,.invSlot button:active{transform:translateY(2px) scale(.985)}
+.upgradeCard h3 small{font-variant-numeric:tabular-nums}
+.currencyLine{padding:9px 12px;border:1px solid #55451a;border-radius:10px;background:linear-gradient(180deg,#1c1b12,#121728);box-shadow:inset 0 1px rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.16)}
+.panel.wide{box-shadow:0 35px 100px rgba(0,0,0,.72),0 0 0 1px rgba(139,92,246,.05),inset 0 1px rgba(255,255,255,.035)}
+.panelHead>button{min-width:42px;min-height:42px;font-size:16px}
+.dialogueScreen{z-index:40;background:rgba(2,4,9,.56);backdrop-filter:blur(7px)}
+.dialogueStage{position:relative;width:min(1180px,94vw);min-height:min(620px,82vh);display:grid;grid-template-columns:260px 1fr;align-items:end;gap:22px;padding:46px 44px 38px;border:1px solid #3f4e74;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(11,17,31,.38),rgba(6,10,19,.92));box-shadow:0 45px 130px rgba(0,0,0,.82),inset 0 1px rgba(255,255,255,.04)}
+.dialogueBackdrop{position:absolute;inset:0;background:radial-gradient(circle at 62% 25%,rgba(124,58,237,.2),transparent 34%),linear-gradient(180deg,rgba(15,23,42,.2),rgba(4,7,14,.82));pointer-events:none}
+.dialogueBackdrop:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 70% 25%,rgba(139,92,246,.22),transparent 30%),linear-gradient(135deg,rgba(15,23,42,.15),rgba(3,7,14,.8));opacity:.9;filter:saturate(.9);transform:scale(1.03)}
+.dialoguePortraitWrap{position:relative;z-index:1;align-self:end;height:360px;display:grid;place-items:end center}
+.dialoguePortrait{position:relative;width:188px;height:240px;display:grid;place-items:center;font:900 118px/1 monospace;color:#dbeafe;background:linear-gradient(180deg,#334155,#111827);border:2px solid #64748b;border-radius:18px 18px 10px 10px;box-shadow:0 28px 50px rgba(0,0,0,.5),inset 0 2px rgba(255,255,255,.12);text-shadow:0 7px #0b1220,0 0 30px rgba(96,165,250,.16)}
+.dialoguePortrait:after{content:"";position:absolute;left:25px;right:25px;bottom:28px;height:24px;border-radius:999px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);opacity:.24}
+.portraitGlow{position:absolute;bottom:4px;width:190px;height:24px;background:radial-gradient(ellipse,rgba(96,165,250,.26),transparent 70%);filter:blur(8px);pointer-events:none}
+.dialogueBox{position:relative;z-index:1;padding:28px 30px 24px;border:1px solid #516383;border-radius:14px;background:linear-gradient(180deg,rgba(15,24,42,.96),rgba(7,12,22,.96));box-shadow:0 22px 50px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.045)}
+.dialogueMeta{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:1px solid #2b3855;padding-bottom:12px;margin-bottom:17px}.dialogueMeta b{display:block;font:900 20px/1.1 Inter,system-ui,sans-serif;letter-spacing:1.2px;color:#f8fafc}.dialogueMeta span{display:block;margin-top:5px;color:#7f91b1;font:10px/1 monospace;letter-spacing:1.5px}.dialogueMeta small{color:#7383a1;font:900 10px/1 monospace}
+#dialogueText{margin:0;min-height:128px;color:#e7edf8;font:500 18px/1.65 Georgia,serif;letter-spacing:.1px;text-shadow:0 1px #05070d}
+.dialogueControls{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:20px}.dialogueControls button:first-child{margin-right:auto;background:transparent;border-color:#2c3955;color:#7d8cab;font-size:10px}
+#dialogueContinue{min-width:190px}
+.menuBackdrop:before{content:"";position:absolute;inset:-8%;z-index:-2;background-image:radial-gradient(circle at 50% 20%,rgba(124,58,237,.22),transparent 35%),linear-gradient(135deg,#10182a,#060912 65%,#1b1230);filter:brightness(.78) saturate(1.05);opacity:.92;border-radius:28px;transform:scale(1.05)}
+.menuBackdrop:after{content:"";position:absolute;inset:-8%;z-index:-1;border-radius:28px;background:radial-gradient(circle at 50% 30%,rgba(124,58,237,.18),transparent 35%),linear-gradient(180deg,rgba(4,8,16,.02),rgba(4,7,12,.78) 80%)}
+.brandTop,.brandMain{position:relative}
+@media(max-width:780px){.dialogueStage{grid-template-columns:1fr;align-items:end;padding:26px}.dialoguePortraitWrap{height:180px;align-self:center}.dialoguePortrait{width:120px;height:150px;font-size:76px}.portraitGlow{width:120px}.dialogueBox{padding:20px}.dialogueMeta b{font-size:16px}#dialogueText{font-size:15px;min-height:120px}.dialogueControls{flex-direction:column-reverse}.dialogueControls button{width:100%;margin:0!important}}
+/* Keep the cinematic menu art inside its own stacking context so the backdrop is visible. */
+.menuBackdrop{isolation:isolate}
+.menuBackdrop:before{z-index:-2}
+.menuBackdrop:after{z-index:-1}
+.menuBackdrop>.brand,.menuBackdrop>.menuCard,.menuBackdrop>.menuStats,.menuBackdrop>.menuFooter{position:relative;z-index:1}
+/* --- OVERLAY INTERACTION OVERRIDES --- */
+.screen.active {
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
+
+.upgradeCard, 
+.upgradeCard button, 
+.screen button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 101 !important;
+}
+/* V0.8 FUN / BOOST / DIFFICULTY PASS */
+#boostPill{color:#fbbf24;border-color:#725c1d;background:linear-gradient(180deg,rgba(55,43,15,.9),rgba(18,18,22,.9))}
+#boostPill.boostActive{color:#fff7ed;border-color:#f59e0b;box-shadow:0 0 18px rgba(245,158,11,.22);animation:boostPulse .8s ease-in-out infinite alternate}
+#dangerPill{color:#fb7185;border-color:#713044}
+@keyframes boostPulse{from{filter:brightness(1)}to{filter:brightness(1.3)}}
+.rewardIcon{letter-spacing:6px}
+.eliteHint{color:#fbbf24}
+
+/* V0.9 POLISH OVERDRIVE — premium presentation layer */
+:root{--gold2:#fde68a;--danger:#fb7185;--ice:#67e8f9}
+button{box-shadow:0 7px 18px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.04)}
+button:hover{box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.035) inset}
+.panel{backdrop-filter:blur(12px);background:linear-gradient(145deg,rgba(20,28,48,.97),rgba(7,12,23,.97));box-shadow:0 35px 100px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.05)}
+.menuCard button{min-height:50px}
+.menuCard .primary{box-shadow:0 14px 38px rgba(124,58,237,.3),inset 0 1px rgba(255,255,255,.2)}
+#toast{min-width:240px;text-align:center;animation:toastIn .22s ease-out}
+#toast b{display:block;color:#fff;font-size:12px;letter-spacing:1px}
+#toast small{display:block;margin-top:4px;color:#aebbd4;font-size:9px;letter-spacing:.6px}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+.polishStage{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:9px;margin:2px auto 5px;padding:5px 9px;border:1px solid #34415f;border-radius:8px;background:linear-gradient(180deg,rgba(21,31,53,.88),rgba(8,13,25,.88));box-shadow:inset 0 1px rgba(255,255,255,.04)}
+.polishStage b{font-size:9px;letter-spacing:1.2px;color:#fde68a}.polishStage span{font-size:8px;color:#8997b4;letter-spacing:.8px}.polishStage i{grid-column:1/-1;display:block;width:150px;height:3px;margin-top:4px;background:#0a1020;border-radius:3px;overflow:hidden;font-style:normal}.polishStage i em{display:block;width:var(--threat,12%);height:100%;background:linear-gradient(90deg,#34d399,#fbbf24,#fb7185);transition:width .25s ease}
+.perkTray{display:flex;align-items:center;gap:4px;flex-wrap:wrap;max-width:190px}.perkTray span{display:grid;place-items:center;min-width:26px;height:25px;padding:0 5px;border:1px solid #5b4a25;border-radius:7px;background:linear-gradient(180deg,rgba(60,45,16,.95),rgba(20,18,17,.95));font-size:14px;box-shadow:0 0 14px rgba(245,158,11,.14);animation:perkFloat 1.1s ease-in-out infinite alternate}
+@keyframes perkFloat{to{transform:translateY(-2px)}}
+#bossHud{padding:7px 12px 9px;border:1px solid #5a3040;border-radius:11px;background:linear-gradient(180deg,rgba(30,12,22,.94),rgba(9,10,18,.92));box-shadow:0 12px 34px rgba(0,0,0,.4)}
+#bossHud>b{color:#fecdd3;text-shadow:0 0 16px rgba(251,113,133,.4)}
+.bossBar div{box-shadow:0 0 12px rgba(239,68,68,.45)}
+#dangerPill{animation:dangerPulse 1.25s ease-in-out infinite alternate}
+@keyframes dangerPulse{from{filter:brightness(1)}to{filter:brightness(1.18)}}
+.rewardIcon{animation:rewardSpin 2.2s ease-in-out infinite alternate}
+@keyframes rewardSpin{to{transform:translateY(-4px) scale(1.04)}}
+/* Stronger hover detail for every interactive card. */
+.upgradeCard:after,.weaponCard:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,transparent 25%,rgba(255,255,255,.055) 48%,transparent 70%);transform:translateX(-110%);transition:transform .5s ease}
+.upgradeCard:hover:after,.weaponCard:hover:after{transform:translateX(110%)}
+@media(max-width:900px){.perkTray{max-width:125px}.polishStage i{width:110px}}
+
+/* PHASE 1 — COMBAT FEEL */
+.weaponQuickbar{display:flex;gap:4px;align-items:center;flex-wrap:wrap;max-width:220px}
+.weaponQuickbar button{min-width:31px;min-height:31px;padding:4px 6px;border-radius:7px;background:linear-gradient(180deg,rgba(18,28,48,.96),rgba(7,12,23,.96));border:1px solid #2d3b5a;font-size:14px;transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease}
+.weaponQuickbar button.active{border-color:#fbbf24;box-shadow:0 0 16px rgba(251,191,36,.2),inset 0 1px rgba(255,255,255,.1);transform:translateY(-2px)}
+.weaponQuickbar button:hover{transform:translateY(-2px);border-color:#7d91bd}
+@media(max-width:900px){.weaponQuickbar{max-width:145px}.weaponQuickbar button{min-width:28px;min-height:28px;font-size:12px}}
+
+
+/* =====================================================================
+   V1.2 FULL POLISH — responsive shell, achievements, fullscreen, premium UI
+   ===================================================================== */
+.v12FullBtn{margin-top:2px;background:linear-gradient(180deg,#17263d,#0d1526);border-color:#3b587f;color:#bfe9ff}
+.v12Achievements{max-height:88vh}
+.achievementGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.achievementCard{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid #2e3b5b;border-radius:12px;background:linear-gradient(145deg,#172139,#0d1424);transition:.18s transform,.18s border-color,.18s box-shadow;position:relative;overflow:hidden}
+.achievementCard:hover{transform:translateY(-3px);border-color:#667aa7;box-shadow:0 18px 35px rgba(0,0,0,.28)}
+.achievementCard.unlocked{border-color:#806d2c;background:linear-gradient(145deg,#282315,#111827);box-shadow:0 0 24px rgba(251,191,36,.08)}
+.achievementIcon{width:44px;height:44px;display:grid;place-items:center;border:1px solid #3a4969;border-radius:10px;background:#0a1120;font-size:23px;color:#93c5fd}
+.achievementCard.unlocked .achievementIcon{color:#fde68a;border-color:#8b6d2a;box-shadow:0 0 16px rgba(251,191,36,.15)}
+.achievementCard b{font-size:12px;letter-spacing:1px}.achievementCard p{margin:5px 0 0;color:#8491ab;font-size:11px;line-height:1.4}.achievementCard>span{font:900 8px monospace;color:#6f7f9e;letter-spacing:1px}.achievementCard.unlocked>span{color:#fde68a}
+#achievementsOverlay{z-index:120}
+#hudFullscreenBtn{font-size:15px;min-width:34px}
+@media(max-width:1100px){#game{width:100vw;height:auto;max-height:100vh}.hud{inset:8px}.bars{width:170px}.weaponQuickbar{max-width:170px}}
+@media(max-width:700px){.hud{grid-template-columns:1fr;gap:5px}.hudLeft,.hudRight{justify-content:center}.hudCenter{display:none}.hudRight{grid-column:auto}.playerCard{transform:scale(.88);transform-origin:left top}.statusPills{max-width:52vw}.weaponDisplay{display:none}.menuFooter{font-size:8px;padding:0 14px}.brandSub{letter-spacing:2px;font-size:9px}.menuStats{gap:6px}.menuStats div{min-width:86px;padding:8px}.panel{padding:16px}.achievementGrid{grid-template-columns:1fr}.achievementCard{grid-template-columns:40px 1fr}.achievementCard>span{grid-column:2}.invGrid{grid-template-columns:repeat(2,1fr)}}
+@media(orientation:landscape) and (max-height:620px){#game{height:100vh;width:auto}.hud{transform:scale(.84);transform-origin:top left}.screen .panel{max-height:94vh}}
